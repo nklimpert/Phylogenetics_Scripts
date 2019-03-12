@@ -19,7 +19,7 @@ name = os.path.basename(file.split('.')[0])
 
 for file in os.listdir():
     if os.path.splitext(file)[-1] == ".fasta":
-        with open(file.replace("alltaxa", name), 'w') as outFile:
+        with open("filtered_" + file, 'w') as outFile:
             for seq in SeqIO.parse(file, "fasta"):
                 if seq.id in TAXA:
                     outFile.write(seq.format("fasta"))

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''Replaces all names in a text file with their real names.'''
 import sys
 
@@ -41,7 +42,7 @@ names = {'DALT': 'D_alata1*',
             'P17': 'Trichopus_zeylanicus',
             'W25': 'Burmannia_bicolor',
             'W26': 'Gymnosiphon_longistylus',
-            'W28': 'Apteria_aphylla1',
+            'W28': 'Apteria_aphylla',
             'DIPE1_3': 'D_cochleariapiculata*',
             'DICO1_3': 'D_communis*',
             'DISY1_3': 'D_sylvatica*',
