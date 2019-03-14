@@ -7,8 +7,9 @@
 *.pm.tdy
 *.bs
 
-#my vscode folder
-\.vscode
+#my folders
+\.vscode\
+local_scripts
 
 # Devel::Cover
 cover_db/
