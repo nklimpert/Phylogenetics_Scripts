@@ -19,24 +19,24 @@ def getTaxa(alignment):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Concatenate a set of multiple sequence alignments")
+    parser = argparse.ArgumentParser(description="Concatenate a set of multiple sequence alignments\
+                                                  and prints the output (unless -o is specified).\
+                                                  Can also be used to quickly convert from one \
+                                                  format to another. Requires BioPython.")
     parser.add_argument("inFiles", nargs='+', metavar="<inFiles>",
                         help="The alignments to be concatenated")
     parser.add_argument("--infmt", choices=['fasta', 'nexus', 'phylip'],
                         default='fasta', help="The file format of the input alignments -\
-                                 I can't handle multiple alignments with \
-                                 different formats, sorry!"
-                        )
+                                 Defaults to fasta")
     parser.add_argument("--outfmt", choices=['fasta', 'nexus', 'phylip'],
                         default='fasta', help="The file format of the output alignment -\
-                                 I can't handle multiple alignments with \
-                                 different formats, sorry!"
-                        )
-    parser.add_argument("-o", "--out", nargs='?', default=sys.stdout,
+                                 Defaults to fasta")
+    parser.add_argument("-o", "--out", nargs='?', metavar="<outFile>",
+                        default=sys.stdout,
                         help="Writes the concatenated matrix to the output file, if specified.\
                               Otherwise, writes to stdout.")
-    parser.add_argument("-p", "--partitions",
-                        help="Use this option to save a partition file as partitions.txt")
+    parser.add_argument("-p", "--partitions", metavar="<PartitionFile>",
+                        help="Use this option to save a partition file to the specified handle.")
     args = parser.parse_args()
 
     fileHandles = args.inFiles
@@ -88,7 +88,7 @@ def main():
     if(partitionFile):
         with open(partitionFile, 'w') as outFile:
             for filename, values in partitions.items():
-                outFile.write("{}: {}-{};\n".format(filename, values[0], values[1]))
+                outFile.write("{} = {}-{};\n".format(filename, values[0], values[1]))
 
 
 if __name__ == "__main__":
