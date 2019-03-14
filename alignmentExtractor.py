@@ -18,7 +18,7 @@ FASFORMAT = {".fasta", ".fas", ".FNA", ".fa"}
 name = os.path.basename(file.split('.')[0])
 
 for file in os.listdir():
-    if os.path.splitext(file)[-1] == ".fasta":
+    if os.path.splitext(file)[-1] in FASFORMAT:
         with open("filtered_" + file, 'w') as outFile:
             for seq in SeqIO.parse(file, "fasta"):
                 if seq.id in TAXA:
