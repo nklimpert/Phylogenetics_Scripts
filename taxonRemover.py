@@ -1,24 +1,42 @@
-'''removes the taxa in the provided .txt file from the alignments in the current directory
-
-    USAGE: taxonRemover.py taxa.txt
-'''
-
+#! /usr/bin/env python
 
 import os
 from Bio import AlignIO
 from Bio.Align import MultipleSeqAlignment
+import argparse
+import re
 import sys
 
-taxonFile = sys.argv[1]
 taxa = []
 
 
-with open(taxonFile, 'r') as taxFile:
-    taxa = taxFile.read().split('\n')
+parser = argparse.ArgumentParser(description="removes the taxa in the provided .txt file from the\
+                                 alignments in the current directory. Depends on BioPython.")
+parser.add_argument("inFiles", nargs='+', metavar="<inFiles>",
+                    help="The alignments to be stripped")
+parser.add_argument("--infmt", choices=['fasta', 'nexus', 'phylip'],
+                    default='fasta', help="The file format of the input alignments -\
+                                Defaults to fasta")
+parser.add_argument("-t", "--taxa", nargs='+', metavar="<taxon>",
+                    required=True,
+                    help="The taxa to be removed. Supports regular expressions.\
+                          E.x., -t 'Homo.*' will remove both Homo_sapiens and\
+                          Homo_neandertalis.")
+parser.add_argument("-o", "--out", default=sys.stdout,
+                    help="Where the output should be saved. Defaults to stdout.")
+args = parser.parse_args()
 
-for file in os.listdir():
-    geneAlignment = AlignIO.read(file, 'fasta')
+taxa = args.taxa
 
-    strippedAlignment = MultipleSeqAlignment([taxon for taxon in geneAlignment if taxon.name not in taxa])
+taxa_regex = [re.compile(taxon) for taxon in taxa]
 
-    AlignIO.write(strippedAlignment, '1'+file, 'fasta')
+files = args.inFiles
+
+for file in files:
+    geneAlignment = AlignIO.read(file, args.infmt)
+
+    strippedAlignment = MultipleSeqAlignment([sequence for sequence in geneAlignment
+                                             if not any(regex.match(sequence.name)
+                                              for regex in taxa_regex)])
+
+    AlignIO.write(strippedAlignment, args.out, 'fasta')
