@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 """extracts the exons from a genbank file and writes them to a fasta.
 
     Usage: gbExonExtract.py inFile.gb -o outFile.fasta

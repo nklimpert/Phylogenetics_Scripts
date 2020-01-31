@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """takes the genes from a single taxon and sorts them to individual gene files.
 
     USAGE: geneDistributor.py taxonFile.fasta
@@ -18,16 +19,17 @@ taxonFile = sys.argv[1]
 
 #! CHANGING THIS TO MAKE SURE IT CORRECTLY SORTS THEM IN MY CURRENT USE CASE
 taxonName = os.path.basename(os.path.split(taxonFile)[-2])
-
+print("Working on: {}...".format(taxonName))
 #taxonName = taxonFile.split('_')[0]
 
 for seq in SeqIO.parse(taxonFile, "fasta"):
     gene = seq.id
+    print("Distributing gene: {}...".format(gene))
     seq.id = taxonName
     seq.description = ''  # for whatever reason the fasta format write includes this
 
     for file in os.listdir(geneDir):
-        if os.path.splitext(file)[-1] == ".fasta":
+        if '.fas' in os.path.splitext(file)[-1]:
             if('_' in file):
                 geneName = file.split("_")[0]
             else:
