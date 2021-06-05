@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """strips out files anything besides the species in the provided .txt file"""
 
 

@@ -11,6 +11,9 @@
 \.vscode
 local_scripts
 testAlignments
+alignment_noGaps
+mito_testing
+perlTesting
 
 # Devel::Cover
 cover_db/

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 
 import sys
 import os
@@ -48,7 +48,6 @@ search = rcluster;
                 for position in range(1,4):
                     outString += '\t{}_pos{} = {}-{}\\3;\n'.format(gene, str(position), str(start-1+position), str(end))
         outFile.write(partition_file.format(outString))
-    
 
 
 
@@ -88,11 +87,14 @@ def main():
     if outFormat == 'phylip':
         outFormat = 'phylip-relaxed'
     partitionFile = args.partitions
-    
+
     # Storing all of the alignments in a dictionary as filehandle: alignment
     alignments = collections.OrderedDict()
-    for file in fileHandles:
-        alignments[file] = AlignIO.read(file, inFormat)
+    try:
+        for file in fileHandles:
+            alignments[file] = AlignIO.read(file, inFormat)
+    except:
+        print("There was something wrong with " + file)
 
     # This block should get all of the taxa across all taxa without any repeats
     matrixTaxa = set()
@@ -111,7 +113,7 @@ def main():
     # need to sort all of the alignments after adding dummy sequences
     map(lambda x: x.sort(), alignments.values())
     combinedMatrix = None
-    
+
     # Writing all of the partition information to a dictionary
     # Keeps track of the file handle, beginning, and end
     partitions = collections.OrderedDict()
@@ -121,6 +123,8 @@ def main():
             combinedMatrix = alignment
             startPos = 1
         else:
+            records1 = set(record.id for record in combinedMatrix)
+            records2 = set(record.id for record in alignment)
             combinedMatrix = combinedMatrix + alignment
         endPos = combinedMatrix.get_alignment_length()
         part_name = os.path.splitext(os.path.basename(filename))[0]
