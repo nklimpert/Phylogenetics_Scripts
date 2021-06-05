@@ -1,11 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 
 import sys
 import os
 import re
 from Bio import AlignIO
 from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import generic_dna
 from Bio.Seq import Seq
 import collections
 import argparse
@@ -107,7 +106,7 @@ def main():
         missingTaxa = matrixTaxa - getTaxa(alignment)
         for taxon in missingTaxa:
             # add a dummy alignment
-            dummy = SeqRecord(Seq(alignment.get_alignment_length()*'-', generic_dna), id=taxon,
+            dummy = SeqRecord(Seq(alignment.get_alignment_length()*'-'), id=taxon,
                               name=taxon)
             alignment.append(dummy)
     # need to sort all of the alignments after adding dummy sequences
