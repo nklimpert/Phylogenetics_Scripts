@@ -49,7 +49,6 @@ search = rcluster;
         outFile.write(partition_file.format(outString))
 
 
-
 def getTaxa(alignment):
     '''alignment is a MultipleSeqAlignment object
        Returns a set of the sequence ids for each alignment'''
@@ -109,8 +108,8 @@ def main():
             dummy = SeqRecord(Seq(alignment.get_alignment_length()*'-'), id=taxon,
                               name=taxon)
             alignment.append(dummy)
-    # need to sort all of the alignments after adding dummy sequences
-    map(lambda x: x.sort(), alignments.values())
+        alignment.sort()
+
     combinedMatrix = None
 
     # Writing all of the partition information to a dictionary
@@ -122,9 +121,8 @@ def main():
             combinedMatrix = alignment
             startPos = 1
         else:
-            records1 = set(record.id for record in combinedMatrix)
-            records2 = set(record.id for record in alignment)
             combinedMatrix = combinedMatrix + alignment
+
         endPos = combinedMatrix.get_alignment_length()
         part_name = os.path.splitext(os.path.basename(filename))[0]
         partitions[part_name] = (startPos, endPos)
@@ -133,6 +131,7 @@ def main():
     # TODO : find better way to silence the record descriptions
     for record in combinedMatrix:
         record.description = ''
+
     AlignIO.write(combinedMatrix, args.out, outFormat)
     if(partitionFile):
         parts = ''
