@@ -15,7 +15,7 @@ def parseInput():
 
     args = parser.parse_args()
 
-    if args.output == "_shifted.fasta":
+    if args.output == "_shifted.gb":
         output = (args.input).split('.')[0] + args.output
     else:
         output = args.output
