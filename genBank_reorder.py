@@ -10,8 +10,8 @@ def parseInput():
     parser.add_argument("input", help="Annotated genbank file")
     parser.add_argument("-shift", default=0, help="The new starting point of the genbank file")
     parser.add_argument("-output", default=str(
-        "_shifted.fasta"),
-        help="Name of output file. Defaults to <gbfile>_shifted.fasta")
+        "_shifted.gb"),
+        help="Name of output file. Defaults to <gbfile>_shifted.gb")
 
     args = parser.parse_args()
 
